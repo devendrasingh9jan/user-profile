@@ -21,14 +21,4 @@ public class UserController {
         User user = userService.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
-
-    @GetMapping("/user-details")
-    public ResponseEntity<User> getUserDetails(@RequestBody User request) {
-        User user = userService.getUserDetails(request);
-        return ResponseEntity.ok(user);
-    }
-    @GetMapping("/user-details/email")
-    public ResponseEntity<Optional<User>> getUserDetailsByEmail(@RequestParam String email) {
-        return ResponseEntity.ok(userService.getUserDetailsByEmail(email));
-    }
 }

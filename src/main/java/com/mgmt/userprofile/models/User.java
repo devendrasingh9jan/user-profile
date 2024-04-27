@@ -21,6 +21,7 @@ public class User  {
   private Integer id;
   @Column(unique = true)
   private String email;
+  @Transient
   private String password;
   private String firstName;
   private String lastName;
