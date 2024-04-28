@@ -26,6 +26,8 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private KafkaTemplate<String,String> kafkaTemplate;
+    @Autowired
+    private ObjectMapper objectMapper;
     @Transient
     public User create(User user) {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
@@ -34,7 +36,6 @@ public class UserService {
         role.setRoleName("ROLE_USER");
         user.setRoles(Set.of(role));
         User savedUser = userRepository.save(user);
-        ObjectMapper objectMapper = new ObjectMapper();
         String userCredentialsJson;
         try {
             userCredentialsJson = objectMapper.writeValueAsString(new UserCred(user.getEmail(), user.getPassword()));
