@@ -28,8 +28,8 @@ public class UserService {
     private KafkaTemplate<String,String> kafkaTemplate;
     @Transient
     public User create(User user) {
-        //String encodedPassword = passwordEncoder.encode(user.getPassword());
-        //user.setPassword(encodedPassword);
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
         Role role = new Role();
         role.setRoleName("ROLE_USER");
         user.setRoles(Set.of(role));
