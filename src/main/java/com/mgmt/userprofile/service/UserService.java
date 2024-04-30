@@ -2,21 +2,17 @@ package com.mgmt.userprofile.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mgmt.userprofile.Repository.UserRepository;
+import com.mgmt.userprofile.exception.UserAlreadyExistsException;
 import com.mgmt.userprofile.models.Role;
 import com.mgmt.userprofile.models.User;
 import com.mgmt.userprofile.models.UserCred;
 import jakarta.persistence.Transient;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 
 @Service
 public class UserService {
@@ -30,6 +26,9 @@ public class UserService {
     private ObjectMapper objectMapper;
     @Transient
     public User create(User user) {
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new UserAlreadyExistsException("User already exists with email: "+user.getEmail());
+        }
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
         Role role = new Role();
