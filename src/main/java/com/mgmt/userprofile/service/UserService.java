@@ -12,6 +12,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -43,5 +44,9 @@ public class UserService {
         }
         kafkaTemplate.send("AUTH_TOPIC", userCredentialsJson);
         return savedUser;
+    }
+
+    public Optional<User> getUser(String email) {
+        return userRepository.findByEmail(email);
     }
 }
